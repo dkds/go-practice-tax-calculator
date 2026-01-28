@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"dkds.com/tax-calculator/cmdmanager"
 	"dkds.com/tax-calculator/prices"
 )
@@ -12,6 +14,10 @@ func main() {
 		cmd := cmdmanager.New()
 		// fm := filemanager.New("prices.txt", fmt.Sprintf("result_%.0f.json", taxRate*100))
 		priceJob := prices.NewTaxIncludedPriceJob(cmd, taxRate)
-		priceJob.Process()
+		err := priceJob.Process()
+		if err != nil {
+			fmt.Println("Could not process job")
+			fmt.Println(err)
+		}
 	}
 }
