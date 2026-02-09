@@ -29,10 +29,10 @@ func (job *TaxIncludedPriceJob) LoadData() error {
 	return nil
 }
 
-func (job TaxIncludedPriceJob) Process() error {
+func (job TaxIncludedPriceJob) Process(doneChannel chan bool) {
 	err := job.LoadData()
 	if err != nil {
-		return err
+		// return err
 	}
 
 	result := make(map[string]string)
@@ -44,7 +44,7 @@ func (job TaxIncludedPriceJob) Process() error {
 
 	job.TaxIncludedPrices = result
 	job.IOManager.WriteJson(job)
-	return nil
+	doneChannel <- true
 }
 
 func NewTaxIncludedPriceJob(iom iomanager.IOManager, taxRate float64) *TaxIncludedPriceJob {
