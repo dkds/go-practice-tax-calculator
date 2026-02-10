@@ -29,12 +29,13 @@ func (job *TaxIncludedPriceJob) LoadData() error {
 	return nil
 }
 
-func (job TaxIncludedPriceJob) Process(doneChannel chan bool) {
+func (job TaxIncludedPriceJob) Process(doneChannel chan bool, errorChannel chan error) {
 	err := job.LoadData()
 	if err != nil {
-		// return err
+		errorChannel <- err
 	}
 
+	// errorChannel <- errors.New("test")
 	result := make(map[string]string)
 
 	for _, price := range job.InputPrices {
